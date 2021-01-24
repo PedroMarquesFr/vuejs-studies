@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+  </head>
+  <body>
+    <p>Hello World!</p>
+    <div id="app">{{nome}} {{idade}}</div>
+
+    <script>
+      options = {
+        el: "#app",
+        data: {
+          nome: "Pedro Marques",
+          idade: "21",
+          frameWorkEstudando: {
+            tipo: "Vue",
+            tempo: "alguns min",
+          },
+        },
+      };
+      const vm = new Vue(options);
+      console.log(vm);
+    </script>
+  </body>
+</html>

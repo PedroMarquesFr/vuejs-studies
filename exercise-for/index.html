@@ -1,0 +1,60 @@
+<!--
+  Utilizando a api:
+  https://viacep.com.br/ws/04538133/json/
+  Mostre o cep, logradouro, complemento, bairro, localidade e uf do que for retornado.
+
+  
+  Use o arquivo json da aula, para listar os cursos e as matérias.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <section>
+        <ul>
+          <li v-for="info in infos">{{info}}</li>
+        </ul>
+        <span v-show="error">CEP not found</span>
+        <input placeholder="Type CEP" v-model="CEP" />
+        <button @click="fetchData">Fetch</button>
+      </section>
+    </div>
+
+    <script>
+      options = {
+        el: "#app",
+        data: {
+          CEP: "04538133",
+          infos: {},
+          error: false,
+        },
+        methods: {
+          fetchData() {
+            if (this.CEP.length === 8) {
+              fetch(`https://viacep.com.br/ws/${this.CEP}/json/`)
+                .then((resp) => resp.json())
+                .then((json) => {
+                  console.log(json);
+                  if (json.erro) return Promise.reject(json);
+                  this.infos = json;
+                  this.error = false;
+                })
+                .catch((err) => {
+                  this.error = true;
+                });
+            }
+          },
+        },
+      };
+      const vm = new Vue(options);
+      console.log(vm);
+    </script>
+  </body>
+</html>

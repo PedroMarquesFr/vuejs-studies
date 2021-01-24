@@ -1,0 +1,77 @@
+<!--
+  Você possui o nome e sobrenome do usuário em data,
+  crie uma propriedade computed que retorne o nome completo
+  
+  Utilize a rest API para puxar as capitais dos paises
+  Use um campo de select, onde o usuário pode selecionar o país.
+  https://restcountries.eu/rest/v2/all
+
+  Com uma função watch, mude a capital de acordo com o país selecionado:
+
+  Ex de campo select:
+
+  <select name="paises" id="paises" v-model="selecionado">
+    <option v-for="pais in paises" :value="pais.name">
+      {{pais.name}}
+    </option>
+  </select>
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <span>{{fullName}}</span>
+      <button @click="fetchCountries">Pegar Caps</button>
+      <select v-model="selected">
+        <option v-for="countrie in countries" :value="countrie.name">{{countrie.name}}</option>
+      </select>
+      <p v-show="capital">{{capitalFrase}}</p>
+    </div>
+
+    <script>
+      options = {
+        el: "#app",
+        data: {
+          nome: "pedro",
+          sobrenome: "marques",
+          countries: [],
+          selected:'',
+          capital:'',
+        },
+        methods: {
+          fetchCountries() {
+            fetch("https://restcountries.eu/rest/v2/all")
+              .then((r) => r.json())
+              .then((r) => {
+                console.log(r);
+                this.countries = r;
+              });
+          },
+        },
+        computed: {
+          fullName() {
+            return `${this.nome} ${this.sobrenome}`;
+          },
+          capitalFrase(){
+            return `a capital é ${this.capital}`;
+          }
+        },
+        watch:{
+          selected(value){
+            const obj = this.countries.find(countrie=>countrie.name===value)
+            this.capital = obj.capital;
+          }
+        }
+      };
+      const vm = new Vue(options);
+      console.log(vm);
+    </script>
+  </body>
+</html>

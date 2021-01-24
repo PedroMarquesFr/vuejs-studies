@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <style>
+      .done {
+        text-decoration: line-through;
+      }
+    </style>
+  </head>
+  <body>
+    <p>Hello World!</p>
+    <div id="app">
+      <form @submit.prevent="changeList">
+        <input v-model="textBox" />
+        <button type="submit">Adicionar</button>
+      </form>
+      <ul>
+        <li v-for="item in list">
+          <input type="checkbox" @click="item.done = !item.done" />
+          <span :class="{done: item.done}">{{item.textBox}}</span>
+          <button @click="removeTodo(item)">Remove</button>
+        </li>
+      </ul>
+      <button @dblclick="clearAll">Remove All</button>
+      double Click to remove all
+    </div>
+
+    <script>
+      const vm = new Vue({
+        el: "#app",
+        data: {
+          textBox: "valor padrão",
+          list: [],
+        },
+        methods: {
+          changeList() {
+            console.log(this.textBox);
+            this.list.push({ textBox: this.textBox, done: false });
+          },
+          clearAll() {
+            this.list=[]
+          },
+          removeTodo(todoObj){
+            const index = this.list.indexOf(todoObj);
+            this.list.splice(index,1);
+          }
+        },
+      });
+    </script>
+  </body>
+</html>
